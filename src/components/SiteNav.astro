@@ -1,0 +1,110 @@
+---
+const {menu, generalSettings, type} = Astro.props;
+const pathname = new URL(Astro.request.url).pathname;
+
+// match sur les livres
+const section = pathname.split('/');
+const isLivre = '/' + section[1] + '/';
+
+// match sur les actualités
+let isActu;
+type.__typename === 'Post' ? isActu = '/actualites/' : '';
+---
+
+<header>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a 
+        class="navbar-brand nav-link" 
+        href="/"
+      >
+        {generalSettings.title}
+      </a>
+      <button 
+        class="navbar-toggler" 
+        type="button" 
+        data-bs-toggle="offcanvas" 
+        data-bs-target="#offcanvasNavbar" 
+        aria-controls="offcanvasNavbar" 
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div 
+        class="offcanvas offcanvas-end" 
+        tabindex="-1" id="offcanvasNavbar" 
+        aria-labelledby="offcanvasNavbarLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+            MENU
+          </h5>
+          <button 
+            type="button"
+            class="btn-close" 
+            data-bs-dismiss="offcanvas" 
+            aria-label="Close"
+          >
+          </button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            {menu.menuItems.nodes.map(menuItem => {
+              if (menuItem.uri === '') {
+                menuItem.uri = '/';
+              }
+              return (
+                <li>
+                  <a 
+                    class={
+                      type?.uri === menuItem.uri || 
+                      type?.label === menuItem.uri || 
+                      isLivre === menuItem.uri || 
+                      isActu === menuItem.uri ? 'active nav-link' : 'nav-link'
+                    } 
+                    href={menuItem.uri || '/'}
+                  >
+                    {menuItem.label}
+                  </a>
+              </li>)
+              })}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+
+<style>
+
+    a.nav-link:hover {
+      color: #b96565;
+    }
+
+    .navbar {
+      height: 90px;
+      background: #FFF !important;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+    }
+
+    .nav-link.active {
+      font-weight: bold;
+    }
+
+    .navbar-toggler {
+      border: 0;
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: none;
+      background-color: rgba(185, 101, 101, .25);
+    }
+
+    @include media-breakpoint-up(xl) { 
+      .offcanvas {
+        width: 25%;
+      }
+    }
+</style>

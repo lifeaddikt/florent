@@ -1,0 +1,59 @@
+---
+
+import { PostsQuery, getImageById } from "../../js/api";
+import PostCard from "../PostCard.astro";
+
+const { node } = Astro.props;
+const { excerpt, title } = node;
+const data = await PostsQuery(0);
+const posts = await data.posts.nodes;
+const featuredImage = await getImageById(49);
+
+---     
+
+<div class="container">
+    <div class="row">
+        {
+            posts.map(post => <PostCard post={post} url={post.url}></PostCard>)
+        }
+    </div>
+    <div class="row">
+        <div class="col-6 text-end">
+            <button id="previous" class="mx-2 btn btn-outline-primary">Previous</button>
+        </div>  
+        <div class="col-6 text-start">
+            <button id="next" class="mx-2 btn btn-outline-primary">Next</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    import { PostsQuery } from "../../js/api";
+
+    let previous = 0
+    const pagination = 8
+    let next = previous + pagination // 8
+    let resultLenght = 40;
+
+    const previousBtn = document.querySelector('#previous');
+    const nextBtn = document.querySelector('#next');
+
+    async function displayPost(previous = 0, next = pagination) {
+        const response = PostsQuery(previous)
+    }
+
+    nextBtn.addEventListener('click', () => {
+        previous += pagination;
+        next +=pagination
+        displayPost(previous, next);
+    })
+
+    previousBtn.addEventListener('click', () => {
+        if (previous <= 0) return
+        previous -= pagination;
+        next -= pagination;
+        displayPost(previous, next);
+    })
+</script>
+
+ 

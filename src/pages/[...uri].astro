@@ -1,0 +1,76 @@
+---
+// Mode static
+export const prerender = true;
+
+// Layouts
+import MainLayout from "../layouts/MainLayout.astro";
+import Archive from "../components/templates/Archive.astro";
+import BookList from "./livres/[...page].astro"
+import PageList from "./actualites/[...page].astro"
+import Single from "../components/templates/Single.astro";
+
+import { getNodeByURI, getAllUris } from "../js/api";
+
+
+// On récupère l'URI de la page en cours
+const uri = `${Astro.params.uri}`;
+
+// On récupère l'ensemble des infos WP sur cette URI
+const data = await getNodeByURI(uri);
+
+// On récupère les infos sur le noeuds
+const node = data.nodeByUri;
+console.log('----')
+console.log(node)
+console.log('----')
+
+// On récupère l'ensemble des URIs utilisées par le site
+export async function getStaticPaths(){
+    try {
+        const siteUris = await getAllUris();
+        return siteUris;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// On attribue un template en fonction du type de page (URI)
+function resolveContentTemplate(node){ 
+    let template;
+    switch(node.__typename ){
+        case 'Post':
+            template = Single;
+            break; 
+        case 'Livre':
+            template = Single;
+            break; 
+        case 'Page':
+            template = Single
+            if (node.isArchive.isarchive && node.isArchive.typeOfPostType === 'post') template = PageList;
+            if (node.isArchive.isarchive && node.isArchive.typeOfPostType === 'livre') template = BookList;
+            break; 
+        case 'Category':
+            template = Archive;
+            break; 
+        case 'Tag':
+            template = Archive;
+            break; 
+        default: 
+            template = Single;
+    }
+
+    return template;
+}
+
+const Template = resolveContentTemplate(node)
+---
+
+<MainLayout 
+    title={ node.title || node.name}
+    description={ node.excerpt }
+>
+    <Template 
+        node={node} 
+        template={Template.name}
+    ></Template>
+</MainLayout>

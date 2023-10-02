@@ -1,0 +1,31 @@
+---
+import { navQuery, getNodeByURI } from "../js/api";
+const { menus, generalSettings } = await navQuery();
+const mainNav = menus.nodes[0];
+const uri = `${Astro.url.pathname}`;
+const data = await getNodeByURI(uri);
+
+
+// components
+import MainHead from "./MainHead.astro"; 
+import SiteNav from "../components/SiteNav.astro"; 
+import SiteFooter from "../components/SiteFooter.astro";
+import Hero from "../components/Hero.astro";
+
+
+
+---
+
+<html lang="en">
+	<MainHead type={data.nodeByUri}/>
+	<body>
+		<header class="mb-5">
+			<SiteNav menu={mainNav} generalSettings={generalSettings} type={data.nodeByUri}></SiteNav>
+			<Hero type={data.nodeByUri}>
+		</header>
+		<div class="container">
+			<slot></slot>
+		</div>
+		<SiteFooter></SiteFooter>
+	</body>
+</html>

@@ -1,0 +1,66 @@
+---
+import { getImageById, getNodeByURI } from "../js/api";
+const { type } = Astro.props;
+
+// Type of content
+const getPageData = await getNodeByURI(Astro.url.pathname);
+const { title = "Livres", excerpt = "Ouvrages publiés"} = getPageData.nodeByUri;
+
+// Featured image
+let featuredImageId;
+if (getPageData.nodeByUri.__typename === 'ContentType') {
+    featuredImageId = 79
+} else {
+    featuredImageId = getPageData?.nodeByUri?.featuredImage?.node?.databaseId
+}
+const featuredImage = await getImageById(featuredImageId);
+
+
+---
+
+<section>
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            {
+                type.__typename === 'Post' || 
+                (type.__typename === 'Page' && type?.isArchive?.fieldGroupName !== 'isArchive') ? null :
+                (
+                    <div class="col-12 col-md-6 p-0 d-flex flex-column align-self-start">
+                        <img 
+                            src={featuredImage?.mediaItem?.sourceUrl}
+                            alt={featuredImage?.mediaItem?.altText}
+                            class="object-fit-cover img-fluid hero-img"
+                        />
+                    </div>
+                )
+
+            }
+
+            <div class={type.__typename === 'Post' ? '' : 'col-md-6'}>
+                    <div class="py-5 px-4 px-lg-5">
+                    <h1>{title}</h1>
+                    {                   
+                        type.__typename === 'Post' || 
+                        (
+                            type.__typename === 'Page' && 
+                            type?.isArchive?.typeOfPostType === null
+                        ) ? null :   
+                        (
+                            <div 
+                                class="strong" 
+                                set:html={excerpt}
+                            ></div>
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .hero-img {
+        border-bottom-right-radius: 100px;
+        aspect-ratio: 16 / 10;
+    }
+</style>

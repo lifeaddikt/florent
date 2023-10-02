@@ -1,0 +1,23 @@
+---
+import "bootstrap/dist/css/bootstrap.min.css";
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js?url";
+import { ViewTransitions } from "astro:transitions";
+
+// styles
+import '../styles/global.css'
+
+---
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Judson:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src={bootstrap}></script>
+    <title>{ Astro.props.type.title || Astro.props.type.label + ' | Nicole Verney-Carron'}</title>
+    <ViewTransitions />
+</head>
+

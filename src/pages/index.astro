@@ -1,0 +1,59 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Editor from "../components/Editor.astro";
+import PostCard from "../components/PostCard.astro";
+import { PostsQuery, BooksQuery } from "../js/api";
+
+// Fetch latest posts
+const dataBooks = await BooksQuery(4);
+const Books = dataBooks.livres.nodes;
+
+const dataPosts = await PostsQuery(4);
+const posts = dataPosts.posts.nodes;
+
+
+Astro.response.headers.set('Cache-Control','max-age=600, must-revalidate');
+
+---
+
+<MainLayout title='Accueil'>
+	<div class="row">
+		<h2>Livres</h2>
+		{
+			Books.map(post => <PostCard post={post} url={post.url} cols="3"></PostCard>)
+		}
+	</div>
+	<div class="row py-5">
+		<div class="col-12 text-center">
+			<a href="/livres" class="btn btn-outline-primary">Livres</a>
+		</div>
+	</div>
+	<div class="row py-5">
+		<h2>Editeurs</h2>
+		<Editor 
+			logo="http://www.city-editions.com/terredhistoires/img/img_terre_histoires/Bannieres/Banniere_logo.png" 
+			name="Terres d'histoires" 
+			description="Inviter au voyage, à l’imaginaire et faire découvrir de nouveaux horizons : c’est l’objectif de Terre d'Histoires. La maison d’édition veut faire découvrir de nouveaux auteurs et emmener le lecteur dans des textes qui nous ont enthousiasmés et qu'ils voulent faire partager." 
+			label="Site de l'éditeur" 
+			link="http://www.city-editions.com/terredhistoires/"
+		/>
+		<Editor 
+			logo="https://presses.univ-st-etienne.fr/skins/charte-modele-de-site/resources/img/logo.png" 
+			name="Presses universitaires de Saint-Etienne" 
+			description="Depuis plus de 40 ans, le service des Presses universitaires de Saint-Étienne attache une importance toute particulière à promouvoir la recherche. Investis d’une mission universitaire de partage du savoir, ils proposent des ouvrages de qualité, qu’il s’agisse de publications scientifiques ou d’ouvrages destinés à un public plus vaste, mais toujours aussi curieux." 
+			label="Site de l'éditeur" 
+			link="https://presses.univ-st-etienne.fr/fr/index.html"
+		/>
+	</div>
+	<div class="row pt-5">
+		<h2>Actualités</h2>
+		{
+			posts.map(post => <PostCard post={post} url={post.url}></PostCard>)
+		}
+	</div>
+	<div class="row py-5">
+		<div class="col-12 text-center">
+			<a href="/actualites" class="btn btn-outline-primary">Actualités</a>
+		</div>
+	</div>
+</MainLayout>

@@ -1,0 +1,43 @@
+---
+
+// component imports
+import MainLayout from "../../layouts/MainLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { PostsQuery } from "../../js/api";
+
+export async function getStaticPaths({ paginate }) {
+    const data = await PostsQuery(0);
+    const page = await data.posts.nodes;
+    return paginate(page, { 
+        pageSize: 8 }
+    );
+}
+
+// All paginated data is passed on the "page" prop
+const { page } = Astro.props;
+const { prev, next} = page.url;
+
+---
+<MainLayout title='Actualités'>
+    <div class="row">
+        <!--List the array of astronaut info-->
+        {page.data.map(post => <PostCard post={post} url={post.url}></PostCard>)}
+    </div>  
+    <div class="row">
+        <div class="row">
+            <div class="col-6 text-end">
+                    { 
+                        prev && (<a href={prev} class="mx-2 btn btn-outline-primary">Précédent</a>)
+                    }               
+            </div>  
+            <div class="col-6 text-start">
+                    {
+                        next && ( <a href={next} class="mx-2 btn btn-outline-primary">Suivant</a>)
+                    }
+            </div>
+        </div>
+        <div class="col-12 text-center pt-3 small">
+            {page.currentPage} sur {page.lastPage}
+        </div>
+    </div>
+</MainLayout>

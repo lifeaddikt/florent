@@ -1,0 +1,37 @@
+---
+
+// component imports
+import MainLayout from "../../layouts/MainLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { BooksQuery } from "../../js/api";
+
+export async function getStaticPaths({ paginate }) {
+    const data = await BooksQuery(0);
+    const page = await data.livres.nodes;
+    return paginate(page, { 
+        pageSize: 8 }
+    );
+}
+
+// All paginated data is passed on the "page" prop
+const { page } = Astro.props;
+const { prev, next} = page.url;
+
+---
+<MainLayout title='Livres'>
+    <div class="row py-5">
+        <!--List the array of astronaut info-->
+        {page.data.map(post => <PostCard post={post} url={post.url} cols="3"></PostCard>)}
+    </div>  
+    <div class="row">
+        <div class="col-12 text-center">
+            { 
+                prev && (<a href={prev} class="mx-2 btn btn-outline-primary">Précédent</a>)
+            }
+            {
+                next && ( <a href={next} class="mx-2 btn btn-outline-primary">Suivant</a>)
+            }
+            <span>Page {page.currentPage} sur {page.lastPage}</span>
+        </div>
+    </div>
+</MainLayout>
