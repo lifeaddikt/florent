@@ -4,15 +4,26 @@ const { type } = Astro.props;
 
 // Type of content
 const getPageData = await getNodeByURI(Astro.url.pathname);
-const { title = "Livres", excerpt = "Ouvrages publiés"} = getPageData.nodeByUri;
+let { title = "Default", excerpt = "Default"} = getPageData.nodeByUri;
 
 // Featured image
-let featuredImageId;
-if (getPageData.nodeByUri.__typename === 'ContentType') {
+let featuredImageId = getPageData?.nodeByUri?.featuredImage?.node?.databaseId
+if (!featuredImageId) featuredImageId = 49
+
+// Page livres
+if (getPageData.nodeByUri.__typename === 'ContentType' && getPageData.nodeByUri.name === 'livres') {
     featuredImageId = 79
-} else {
-    featuredImageId = getPageData?.nodeByUri?.featuredImage?.node?.databaseId
+    title = 'Livres'
+    excerpt = ''
 }
+
+// Page Accueil
+if (getPageData.nodeByUri.__typename === 'ContentType' && getPageData.nodeByUri.name === 'post') {
+    featuredImageId = 49
+    title = 'Accueil'
+    excerpt = 'ex Maître de conférences en histoire contemporaine, Nicole Verney-Carron prolonge sa passion pour la recherche et a transmission en se consacrant à la littérature.'
+}
+
 const featuredImage = await getImageById(featuredImageId);
 
 
@@ -39,7 +50,14 @@ const featuredImage = await getImageById(featuredImageId);
             <div class={type.__typename === 'Post' ? '' : 'col-md-6'}>
                     <div class="py-5 px-4 px-lg-5">
                     <h1>{title}</h1>
-                    {                   
+                    {          
+                        // Page livre
+                        type.__typename === 'ContentType' && type.names === 'livres' ||
+
+                        // Page accueil 
+                        type.__typename === 'ContentType' && type.names === 'post' ||
+
+                        // Page d'un post ou d'une single
                         type.__typename === 'Post' || 
                         (
                             type.__typename === 'Page' && 

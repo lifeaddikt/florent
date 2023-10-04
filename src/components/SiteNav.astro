@@ -9,6 +9,10 @@ const isLivre = '/' + section[1] + '/';
 // match sur les actualités
 let isActu;
 type.__typename === 'Post' ? isActu = '/actualites/' : '';
+
+// match sur la home
+let isHome;
+type.__typename === 'ContentType' && type.label === 'Articles' ? isHome = '/' : '';
 ---
 
 <header>
@@ -60,6 +64,7 @@ type.__typename === 'Post' ? isActu = '/actualites/' : '';
                       type?.uri === menuItem.uri || 
                       type?.label === menuItem.uri || 
                       isLivre === menuItem.uri || 
+                      isHome === menuItem.uri ||
                       isActu === menuItem.uri ? 'active nav-link' : 'nav-link'
                     } 
                     href={menuItem.uri || '/'}

@@ -3,35 +3,20 @@
 export const prerender = true;
 
 // Layouts
-import MainLayout from "../layouts/MainLayout.astro";
 import Archive from "../components/templates/Archive.astro";
+import Single from "../components/templates/Single.astro";
+import MainLayout from "../layouts/MainLayout.astro";
 import BookList from "./livres/[...page].astro"
 import PageList from "./actualites/[...page].astro"
-import Single from "../components/templates/Single.astro";
 
 import { getNodeByURI, getAllUris } from "../js/api";
-
-
-// On récupère l'URI de la page en cours
 const uri = `${Astro.params.uri}`;
-
-// On récupère l'ensemble des infos WP sur cette URI
 const data = await getNodeByURI(uri);
-
-// On récupère les infos sur le noeuds
 const node = data.nodeByUri;
-console.log('----')
-console.log(node)
-console.log('----')
 
 // On récupère l'ensemble des URIs utilisées par le site
 export async function getStaticPaths(){
-    try {
-        const siteUris = await getAllUris();
-        return siteUris;
-    } catch (error) {
-        console.log(error)
-    }
+    return await getAllUris();
 }
 
 // On attribue un template en fonction du type de page (URI)
@@ -70,7 +55,6 @@ const Template = resolveContentTemplate(node)
     description={ node.excerpt }
 >
     <Template 
-        node={node} 
-        template={Template.name}
+        node={node}
     ></Template>
 </MainLayout>

@@ -4,6 +4,8 @@ import { getImageById } from "../../js/api";
 const { node } = Astro.props;
 const { excerpt, title, date, content } = node;
 const featuredImage = await getImageById(node?.featuredImage?.node?.databaseId);
+
+console.log(Astro.params)
 --- 
 
 
