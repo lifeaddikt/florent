@@ -5,8 +5,6 @@ const mainNav = menus.nodes[0];
 const uri = `${Astro.url.pathname}`;
 const data = await getNodeByURI(uri);
 
-console.log(data.nodeByUri)
-
 // components
 import MainHead from "./MainHead.astro"; 
 import SiteNav from "../components/SiteNav.astro"; 

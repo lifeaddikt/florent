@@ -5,6 +5,7 @@ export const prerender = true;
 // Layouts
 import Archive from "../components/templates/Archive.astro";
 import Single from "../components/templates/Single.astro";
+import Home from "../components/templates/Home.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import BookList from "./livres/[...page].astro"
 import PageList from "./actualites/[...page].astro"
@@ -16,11 +17,18 @@ const node = data.nodeByUri;
 
 // On récupère l'ensemble des URIs utilisées par le site
 export async function getStaticPaths(){
-    return await getAllUris();
+    const uris = await getAllUris();
+/*     console.log('----- uris ------')
+    console.log(uris)
+    console.log('----- uris ------') */
+    return uris
 }
 
 // On attribue un template en fonction du type de page (URI)
 function resolveContentTemplate(node){ 
+    console.log('----- node ------')
+    console.log(node.__typename)
+    console.log('----- node ------')
     let template;
     switch(node.__typename ){
         case 'Post':
@@ -30,9 +38,10 @@ function resolveContentTemplate(node){
             template = Single;
             break; 
         case 'Page':
-            template = Single
             if (node.isArchive.isarchive && node.isArchive.typeOfPostType === 'post') template = PageList;
-            if (node.isArchive.isarchive && node.isArchive.typeOfPostType === 'livre') template = BookList;
+            else if (node.isArchive.isarchive && node.isArchive.typeOfPostType === 'livre') template = BookList;
+            else if (node.isArchive.isarchive && node.isFrontPage) template = Home;
+            else template = Single
             break; 
         case 'Category':
             template = Archive;
@@ -43,11 +52,11 @@ function resolveContentTemplate(node){
         default: 
             template = Single;
     }
-
     return template;
 }
 
 const Template = resolveContentTemplate(node)
+console.log('Template : ' + Template.moduleId)
 ---
 
 <MainLayout 

@@ -17,9 +17,6 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 const { prev, next} = page.url;
 
-console.log(Astro.params)
-console.log(page)
-
 ---
 <MainLayout title='Actualités'>
     <div class="row">
