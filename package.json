@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --config astro-local.config.mjs",
     "start": "node ./dist/server/entry.mjs",
-    "build": "astro build",
+    "build": "astro build --config astro.config.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

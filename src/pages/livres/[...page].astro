@@ -14,6 +14,7 @@ export async function getStaticPaths({ paginate }) {
 }
 
 // All paginated data is passed on the "page" prop
+console.log(Astro.props);
 const { page } = Astro.props;
 const { prev, next} = page.url;
 

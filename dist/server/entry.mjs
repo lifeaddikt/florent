@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import http from 'node:http';
 import { TLSSocket } from 'node:tls';
 import 'cookie';
-import { l as levels, d as dateTimeFormat, A as AstroCookies, a as attachCookiesToResponse, c as createAPIContext, b as callEndpoint, e as callMiddleware, L as Logger, f as AstroIntegrationLogger, g as getSetCookiesFromResponse, manifest } from './manifest_5bc7b988.mjs';
+import { l as levels, d as dateTimeFormat, A as AstroCookies, a as attachCookiesToResponse, c as createAPIContext, b as callEndpoint, e as callMiddleware, L as Logger, f as AstroIntegrationLogger, g as getSetCookiesFromResponse, manifest } from './manifest_8a627fba.mjs';
 import { yellow, dim, bold, cyan, red, reset } from 'kleur/colors';
 import { trimSlashes, joinPaths, slash, prependForwardSlash, removeTrailingForwardSlash, collapseDuplicateSlashes } from '@astrojs/internal-helpers/path';
 import { A as AstroError, G as GetStaticPathsRequired, j as InvalidGetStaticPathsReturn, k as InvalidGetStaticPathsEntry, l as GetStaticPathsExpectedParams, n as GetStaticPathsInvalidRouteParam, P as PageNumberParamNotFound, o as GetStaticPathsRemovedRSSHelper, N as NoMatchingStaticPathFound, p as PrerenderDynamicEndpointPathCollide, q as LocalsNotAnObject, R as ReservedSlotName, t as renderSlotToString, v as renderJSX, w as chunkToString, C as ClientAddressNotAvailable, S as StaticClientAddressNotAvailable, x as ResponseSentError, y as renderPage$1, z as AstroUserError } from './chunks/astro_161e0c43.mjs';
@@ -1682,10 +1682,10 @@ const adapter = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const _page0  = () => import('./chunks/node_060b5519.mjs');
-const _page1  = () => import('./chunks/index_7d2e2e7b.mjs');
-const _page2  = () => import('./chunks/_.._e19e73f3.mjs');
-const _page3  = () => import('./chunks/_.._59d653c0.mjs');
-const _page4  = () => import('./chunks/_.._e24aa14e.mjs');const pageMap = new Map([["node_modules/astro/dist/assets/endpoint/node.js", _page0],["src/pages/index.astro", _page1],["src/pages/actualites/[...page].astro", _page2],["src/pages/livres/[...page].astro", _page3],["src/pages/[...uri].astro", _page4]]);
+const _page1  = () => import('./chunks/index_9ed80fff.mjs');
+const _page2  = () => import('./chunks/_.._5ee7cd44.mjs');
+const _page3  = () => import('./chunks/_.._8428b845.mjs');
+const _page4  = () => import('./chunks/_.._185f2cd5.mjs');const pageMap = new Map([["node_modules/astro/dist/assets/endpoint/node.js", _page0],["src/pages/index.astro", _page1],["src/pages/actualites/[...page].astro", _page2],["src/pages/livres/[...page].astro", _page3],["src/pages/[...uri].astro", _page4]]);
 const _manifest = Object.assign(manifest, {
 	pageMap,
 	renderers,
