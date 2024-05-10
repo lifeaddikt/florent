@@ -14,15 +14,14 @@ export async function getStaticPaths({ paginate }) {
 }
 
 // All paginated data is passed on the "page" prop
-console.log(Astro.props);
 const { page } = Astro.props;
-const { prev, next} = page.url;
+const { prev, next } = page?.url || {};
 
 ---
 <MainLayout title='Livres'>
     <div class="row py-5">
         <!--List the array of astronaut info-->
-        {page.data.map(post => <PostCard post={post} url={post.url} cols="3"></PostCard>)}
+        {page?.data?.map(post => <PostCard post={post} url={post.url} cols="3"></PostCard>)}
     </div>  
     <div class="row">
         <div class="col-12 text-center">
@@ -32,7 +31,7 @@ const { prev, next} = page.url;
             {
                 next && ( <a href={next} class="mx-2 btn btn-outline-primary">Suivant</a>)
             }
-            <span>Page {page.currentPage} sur {page.lastPage}</span>
+            <span>Page {page?.currentPage} sur {page?.lastPage}</span>
         </div>
     </div>
 </MainLayout>
